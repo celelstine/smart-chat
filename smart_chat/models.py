@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from utils.model_mixins import BaseSmartChatModelMixin
 from utils.datetime import timezone_exist
+from utils.genetics import matches_regex
 
 
 class Store(BaseSmartChatModelMixin, models.Model):
@@ -93,6 +94,7 @@ class Chat(BaseSmartChatModelMixin, models.Model):
     """
     a single text sent out in a conversation
     """
+
     conversation = models.ForeignKey(
         Conversation, on_delete=models.CASCADE, blank=False,
         related_name='chats')
@@ -110,6 +112,15 @@ class Chat(BaseSmartChatModelMixin, models.Model):
     )
     status = models.CharField(choices=STATUS_CHOICES, max_length=4,
                               default=RECEIVED)
+
+    def clean(self):
+        if self.payload and not matches_regex(
+                r"[A-zZ1234567890{}$%_/-\/~@#$%^&()!?]+", self.payload):
+            raise ValueError("Invalid payload")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Chat, self).save(*args, **kwargs)
 
 
 class Schedule(BaseSmartChatModelMixin, models.Model):

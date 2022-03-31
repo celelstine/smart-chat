@@ -47,3 +47,5 @@ class ClientTestCase(TestCase):
             user=self.user, phone_number='32222', timezone=timezone)
 
         self.assertEqual(timezone, client.timezone)
+
+# TODO: write test for chat payload regex

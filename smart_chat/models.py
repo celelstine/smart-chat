@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from utils.model_mixins import BaseSmartChatModelMixin
+from utils.datetime import timezone_exist
 
 
 class Store(BaseSmartChatModelMixin, models.Model):
@@ -12,6 +13,14 @@ class Store(BaseSmartChatModelMixin, models.Model):
     # sample fo time zone US/Hawaii
     timezone = models.CharField(max_length=100, null=False, blank=False)
     phone_number = models.CharField(max_length=25, null=False, blank=False)
+
+    def clean(self):
+        if self.timezone and not timezone_exist(self.timezone):
+            raise ValueError("Unknown time zone")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Store, self).save(*args, **kwargs)
 
 
 class Discount(BaseSmartChatModelMixin, models.Model):
@@ -41,6 +50,14 @@ class Client(BaseSmartChatModelMixin, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     timezone = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(max_length=25, null=False, blank=False)
+
+    def clean(self):
+        if self.timezone and not timezone_exist(self.timezone):
+            raise ValueError("Unknown time zone")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(Client, self).save(*args, **kwargs)
 
 
 class Conversation(BaseSmartChatModelMixin, models.Model):

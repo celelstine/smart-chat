@@ -49,3 +49,4 @@ class ClientTestCase(TestCase):
         self.assertEqual(timezone, client.timezone)
 
 # TODO: write test for chat payload regex
+# TODO: write test utc_offset for conversation

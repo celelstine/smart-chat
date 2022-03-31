@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from utils.model_mixins import BaseSmartChatModelMixin
 from utils.datetime import timezone_exist
-from utils.genetics import matches_regex
+from utils.generics import matches_regex
 
 
 class Store(BaseSmartChatModelMixin, models.Model):
@@ -23,6 +23,9 @@ class Store(BaseSmartChatModelMixin, models.Model):
         self.clean()
         super(Store, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class Discount(BaseSmartChatModelMixin, models.Model):
     """
@@ -34,6 +37,9 @@ class Discount(BaseSmartChatModelMixin, models.Model):
     )
     discount_code = models.CharField(max_length=20, null=False, blank=False)
 
+    def __str__(self):
+        return self.discount_code
+
 
 class Operator(BaseSmartChatModelMixin, models.Model):
     """
@@ -43,6 +49,14 @@ class Operator(BaseSmartChatModelMixin, models.Model):
     # can be Fk to an operator store model
     operator_group = models.CharField(max_length=50, null=False, blank=False)
 
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        indexes = [
+             models.Index(fields=['user_id'])
+        ]
+
 
 class Client(BaseSmartChatModelMixin, models.Model):
     """
@@ -51,6 +65,9 @@ class Client(BaseSmartChatModelMixin, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     timezone = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(max_length=25, null=False, blank=False)
+
+    def __str__(self):
+        return self.user.username
 
     def clean(self):
         if self.timezone and not timezone_exist(self.timezone):
@@ -88,6 +105,9 @@ class Conversation(BaseSmartChatModelMixin, models.Model):
                               default=RECEIVED)
     # we use this to keep check of the timezone to respect when sending
     utc_offset = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.store}/{self.client}"
 
 
 class Chat(BaseSmartChatModelMixin, models.Model):

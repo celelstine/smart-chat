@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from utils.models_mixins import BaseSmartChatModelMixin
+from utils.model_mixins import BaseSmartChatModelMixin
 
 
 class Store(BaseSmartChatModelMixin, models.Model):

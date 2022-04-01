@@ -10,6 +10,8 @@ from api.v1.serializers import (
     ConversationSerializer,
 )
 
+# ! TODO: setup authenticaton and limit objects to user's scope
+
 
 class ChatViewSet(viewsets.ModelViewSet):
     """

@@ -131,3 +131,6 @@ dmypy.json
 
 # postgres data
 data/
+
+# confidencial
+docker-compose-vars.env

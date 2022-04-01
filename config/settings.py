@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Installed package
+    'rest_framework',
+
     # Our apps
     'smart_chat',
+    'api',
 ]
 
 MIDDLEWARE = [

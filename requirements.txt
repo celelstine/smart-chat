@@ -1,5 +1,6 @@
 Django>=3.0,<4.0
 psycopg2>=2.8
+djangorestframework<4.0.0,>=3.9.0
 
 # ! move this to dev requirement
 factory-boy==2.9.2

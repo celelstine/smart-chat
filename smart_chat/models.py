@@ -134,9 +134,6 @@ class Chat(BaseSmartChatModelMixin, models.Model):
         Conversation, on_delete=models.CASCADE, blank=False,
         related_name='chats')
     payload = models.CharField(max_length=300, null=False, blank=False)
-    discount = models.ForeignKey(
-        Discount, on_delete=models.CASCADE, blank=False,
-        related_name='chats')
     RECEIVED = 'recv'
     PENDING = 'pend'
     SENT = 'sent'

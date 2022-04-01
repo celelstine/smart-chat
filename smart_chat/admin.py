@@ -68,7 +68,7 @@ class ConversationAdmin(admin.ModelAdmin):
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'conversation', 'payload', 'discount', 'status',
+        'id', 'conversation', 'payload', 'status',
         'modify_date', 'create_date')
     readonly_fields = ('create_date', 'modify_date')
     search_fields = ['payload__icontains']

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template import Context, Template
 
 from utils.model_mixins import BaseSmartChatModelMixin
 from utils.datetime import (
@@ -149,12 +150,24 @@ class Chat(BaseSmartChatModelMixin, models.Model):
 
     def clean(self):
         if self.payload and not matches_regex(
-                r"[A-zZ1234567890{}$%_/-\/~@#$%^& ()!?]+", self.payload):
+                r"[A-zA-Z1234567890{}$%_/-\/~@#$%^&\s()!?\.]+", self.payload):
             raise ValueError("Invalid payload")
 
     def save(self, *args, **kwargs):
         self.clean()
         super(Chat, self).save(*args, **kwargs)
+
+    @property
+    def plain_text(self):
+        # replace since user doesn't have full_name property
+        payload = self.payload.replace("full_name", "get_full_name")
+        template = Template(payload)
+        conversation = self.conversation
+        context = Context({
+            "client": conversation.client, "operator": conversation.operator,
+            "discount": conversation.store.discount
+        })
+        return template.render(context)
 
 
 class Schedule(BaseSmartChatModelMixin, models.Model):

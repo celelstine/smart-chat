@@ -48,6 +48,9 @@ class ClientTestCase(TestCase):
 
         self.assertEqual(timezone, client.timezone)
 
-# TODO: write test for chat payload regex
+
 # TODO: write test to set utc_offset for conversation on creation
+
+# TODO: write test for chat payload regex
+# TODO: write test for chat plain_text
 # TODO: write test that a schedule is created for each chat

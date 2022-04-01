@@ -149,7 +149,7 @@ class Chat(BaseSmartChatModelMixin, models.Model):
 
     def clean(self):
         if self.payload and not matches_regex(
-                r"[A-zZ1234567890{}$%_/-\/~@#$%^&()!?]+", self.payload):
+                r"[A-zZ1234567890{}$%_/-\/~@#$%^& ()!?]+", self.payload):
             raise ValueError("Invalid payload")
 
     def save(self, *args, **kwargs):
@@ -165,4 +165,4 @@ class Schedule(BaseSmartChatModelMixin, models.Model):
         Chat,
         on_delete=models.CASCADE,
     )
-    sent_date = models.DateTimeField()
+    sent_date = models.DateTimeField(null=True, blank=True)
